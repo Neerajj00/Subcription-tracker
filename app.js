@@ -7,12 +7,14 @@ import connectToDatabase from './database/db.js';
 import errorMiddleWare from './middleware/error.middleware.js';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
+import arcjetMiddleware from './middleware/arcjet.middleware.js';
 
 const app = express();
 
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(arcjetMiddleware); // Arcjet middleware for security and bot detection
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
