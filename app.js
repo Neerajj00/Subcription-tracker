@@ -6,6 +6,7 @@ import subscriptionRouter from './routes/subscription.route.js';
 import connectToDatabase from './database/db.js';
 import errorMiddleWare from './middleware/error.middleware.js';
 import cookieParser from 'cookie-parser';
+import mongoose from 'mongoose';
 
 const app = express();
 
@@ -23,10 +24,11 @@ app.get('/',(req,res)=>{
     res.send('Welcome to the subscription tracker API.');
 })
 
-
 app.listen(PORT,async () => {
+    await connectToDatabase();
     console.log(`Server running on port : http://localhost:${PORT}`);
-    // await connectToDatabase();
 })
+
+  
 
 export default app;

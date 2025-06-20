@@ -1,5 +1,5 @@
 const errorMiddleWare = (err,req, res,next) => {
-    try{
+    
         let error = {...err};
         error.message = err.message;
         console.error(err);
@@ -29,10 +29,7 @@ const errorMiddleWare = (err,req, res,next) => {
             success:false,
             message:error.message || 'Internal Server Error',
         })
-    }
-    catch(error){
-        next(error);
-    }
+    
 }
 
 export default errorMiddleWare;
