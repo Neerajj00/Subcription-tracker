@@ -54,10 +54,41 @@ export const signUp = async (req,res,next) => {
     }
 }
 
-export const signIn = async (req,res) => {
+export const signIn = async (req,res,next) => {
+    try{
+        const {email, password} = req.body;
+        // Check if user exists
+        const user = await User.findOne({email});
+        if(!user){
+            const err = new Error("Invalid credentials");
+            err.statusCode = 401;
+            throw err;
+        }
+        // Check if password is correct
+        const ispasswrodValid = await bcrypt.compare(password,user.password);
 
+        if(ispasswrodValid){
+            // generate jwt token 
+            const token = jwt.sign({userId:user.id}, JWT_SECRET, {expiresIn:JWT_EXPIRES_IN});
+            res.status(200).json({
+                message:"user Logged in Successfully",
+                user:{
+                    id:user._id,
+                    username:user.username,
+                    email:user.email,
+                }
+            })
+        }else{
+            const err = new Error("Invalid credentials");
+            err.statusCode = 401;
+            throw err;
+        }
+
+    }catch(error){
+        next(error);
+    }
 }
 
-export const signOut = async (req,res) => {
+export const signOut = async (req,res,next) => {
     
 }

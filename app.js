@@ -25,10 +25,14 @@ app.get('/',(req,res)=>{
 })
 
 app.listen(PORT,async () => {
-    await connectToDatabase();
+    // await connectToDatabase();
     console.log(`Server running on port : http://localhost:${PORT}`);
 })
-
+process.on('SIGINT', async () => {
+    await mongoose.connection.close();
+    console.log('🔌 MongoDB connection closed on SIGINT');
+    process.exit(0);
+  });
   
 
 export default app;
