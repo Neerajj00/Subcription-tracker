@@ -23,7 +23,7 @@ export const signUp = async (req,res,next) => {
 
         // hash the password for the new user
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hashSync(password, salt);
+        const hashedPassword = bcrypt.hashSync(password, salt);
 
         // create a new user
         const newUsers = await User.create([{
@@ -37,7 +37,12 @@ export const signUp = async (req,res,next) => {
 
         await session.commitTransaction();
         session.endSession();
-
+        res.cookie("token", token, {
+            httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+            secure: true , // Use secure cookies in production
+            sameSite: 'strict', // Helps prevent CSRF attacks
+            maxAge: JWT_EXPIRES_IN * 1000 // Set cookie expiration to match JWT expiration
+        })
         res.status(201).json({
             message: "User created successfully",
             user: {
@@ -76,7 +81,8 @@ export const signIn = async (req,res,next) => {
                     id:user._id,
                     username:user.username,
                     email:user.email,
-                }
+                },
+                token
             })
         }else{
             const err = new Error("Invalid credentials");
