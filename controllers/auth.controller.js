@@ -37,12 +37,12 @@ export const signUp = async (req,res,next) => {
 
         await session.commitTransaction();
         session.endSession();
-        res.cookie("token", token, {
-            httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-            secure: true , // Use secure cookies in production
-            sameSite: 'strict', // Helps prevent CSRF attacks
-            maxAge: JWT_EXPIRES_IN * 1000 // Set cookie expiration to match JWT expiration
-        })
+        // res.cookie("token", token, {
+        //     httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+        //     secure: true , // Use secure cookies in production
+        //     sameSite: 'strict', // Helps prevent CSRF attacks
+        //     maxAge: JWT_EXPIRES_IN * 1000 // Set cookie expiration to match JWT expiration
+        // })
         res.status(201).json({
             message: "User created successfully",
             user: {

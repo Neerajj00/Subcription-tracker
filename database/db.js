@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { DB_URI } from "../config/env.js";
 
 if(!DB_URI){
-    console.log(DB_URI);
     throw new Error("please define the database url in your environment variable inside .env");
 }
 
